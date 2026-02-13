@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>For Radhiii ❤️</title>
+  <style>
+    :root{
+      --bg1:#070814;
+      --bg2:#2b0b1f;
+      --card:rgba(255,255,255,.08);
+      --line:rgba(255,255,255,.16);
+      --txt:#fff;
+      --muted:rgba(255,255,255,.80);
+      --pink:#ff4d6d;
+      --pink2:#ff7aa2;
+      --gold:#ffda79;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--txt);
+      overflow:hidden;
+      background:
+        radial-gradient(1200px 800px at 18% 10%, #2d2a64 0%, transparent 62%),
+        radial-gradient(1000px 700px at 82% 18%, #7a1748 0%, transparent 60%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+    }
+    canvas{position:fixed; inset:0; z-index:-1}
+
+    .wrap{min-height:100%; display:grid; place-items:center; padding:22px;}
+    .card{
+      width:min(700px, 94vw);
+      border-radius:24px;
+      background:var(--card);
+      border:1px solid var(--line);
+      box-shadow:0 18px 70px rgba(0,0,0,.35);
+      backdrop-filter: blur(12px);
+      padding:18px;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .top{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px;}
+    .badge{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:8px 12px; border-radius:999px;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+      font-size:12px; color:var(--muted);
+    }
+    .progress{display:flex; gap:8px; align-items:center;}
+    .dot{
+      width:8px; height:8px; border-radius:999px;
+      background:rgba(255,255,255,.22);
+      border:1px solid rgba(255,255,255,.22);
+    }
+    .dot.active{
+      background:linear-gradient(90deg, var(--pink), var(--pink2));
+      box-shadow:0 10px 22px rgba(255,77,109,.30);
+    }
+
+    /* “Couple card” (no photos) */
+    .coupleCard{
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.14);
+      overflow:hidden;
+      position:relative;
+      margin:10px 0 14px;
+      height: 360px;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(900px 360px at 20% 20%, rgba(255,122,162,.24), transparent 55%),
+        radial-gradient(900px 360px at 80% 80%, rgba(255,218,121,.18), transparent 55%),
+        linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+    }
+    .coupleInner{
+      width: min(520px, 88%);
+      display:grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items:center;
+      gap:16px;
+    }
+    .avatar{
+      height: 170px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.18);
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      place-items:center;
+      box-shadow: 0 18px 50px rgba(0,0,0,.22);
+    }
+    .avatar::before{
+      content:"";
+      position:absolute; inset:-60%;
+      background: conic-gradient(from 0deg, rgba(255,77,109,.0), rgba(255,77,109,.25), rgba(255,218,121,.18), rgba(255,77,109,.0));
+      animation: spin 7s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .avatar span{
+      position:relative;
+      font-weight:900;
+      font-size: clamp(44px, 6vw, 60px);
+      letter-spacing: 1px;
+      padding: 10px 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(8px);
+    }
+    .heartCore{
+      width:86px; height:86px;
+      border-radius:999px;
+      display:grid; place-items:center;
+      background:linear-gradient(90deg, var(--pink), var(--pink2));
+      box-shadow:0 18px 40px rgba(255,77,109,.35);
+      border:1px solid rgba(255,255,255,.22);
+      font-size:30px;
+      animation: pop 2.6s ease-in-out infinite;
+      user-select:none;
+    }
+    @keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+
+    .mini{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+      opacity:.92;
+      font-size:12px;
+      color: rgba(255,255,255,.86);
+    }
+    .chip{
+      padding:7px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+    }
+
+    h1{margin:8px 0 6px; font-size:clamp(26px,4vw,38px); letter-spacing:.2px; text-align:center;}
+    p{margin:0; color:var(--muted); line-height:1.55; font-size:clamp(14px,2.2vw,16px); text-align:center;}
+    .big{font-size:clamp(16px,2.7vw,18px); color:rgba(255,255,255,.90);}
+
+    .page{display:none; animation: fade .55s ease both;}
+    .page.active{display:block;}
+    @keyframes fade{from{opacity:0; transform:translateY(10px)}to{opacity:1; transform:translateY(0)}}
+
+    .quote{
+      margin-top:10px;
+      padding:14px 14px;
+      border-radius:16px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.12);
+      font-size: clamp(15px, 2.4vw, 18px);
+      color: rgba(255,255,255,.93);
+      white-space: pre-line;
+      text-align:center;
+    }
+
+    .actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:16px;}
+    .btn{
+      border:0; cursor:pointer; user-select:none;
+      padding:12px 18px; border-radius:999px;
+      font-weight:800; color:#fff;
+      background:linear-gradient(90deg, var(--pink), var(--pink2));
+      box-shadow:0 12px 34px rgba(255,77,109,.32);
+      transition: transform .15s ease, filter .15s ease;
+    }
+    .btn:hover{transform: translateY(-1px); filter:brightness(1.03)}
+    .btn:active{transform: translateY(1px)}
+    .btn.ghost{
+      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:none;
+      color: rgba(255,255,255,.92);
+    }
+    .footerHint{margin-top:12px; font-size:12px; opacity:.72; text-align:center;}
+
+    /* typing effect */
+    .typing{
+      border-right:2px solid rgba(255,255,255,.6);
+      padding-right:6px;
+      display:inline-block;
+      animation: caret 1s steps(1) infinite;
+    }
+    @keyframes caret{50%{border-color:transparent}}
+  </style>
+</head>
+
+<body>
+  <canvas id="c"></canvas>
+
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <div class="badge">💌 A post from <b style="color:#fff; margin-left:6px;">Gaushal</b></div>
+        <div class="progress">
+          <span class="dot active" id="d1"></span>
+          <span class="dot" id="d2"></span>
+          <span class="dot" id="d3"></span>
+        </div>
+      </div>
+
+      <!-- No-photo premium couple card -->
+      <div class="coupleCard">
+        <div class="coupleInner">
+          <div class="avatar"><span>G</span></div>
+          <div class="heartCore">❤</div>
+          <div class="avatar"><span>R</span></div>
+        </div>
+        <div class="mini">
+          <span class="chip">Gaushal ❤ Radhiii</span>
+          <span class="chip">Only you. Always you.</span>
+          <span class="chip">Happy Valentine’s</span>
+        </div>
+      </div>
+
+      <!-- PAGE 1 -->
+      <section class="page active" id="p1">
+        <h1>Good Morning, Radhiii ☀️</h1>
+        <p class="big">Aaj ki shuruaat sirf ek baat se…<br><b>tum yaad aayi.</b> 💗</p>
+        <div class="actions">
+          <button class="btn" id="next1">Open next 💖</button>
+        </div>
+        <div class="footerHint">Tap the button to continue</div>
+      </section>
+
+      <!-- PAGE 2 -->
+      <section class="page" id="p2">
+        <h1>For You 🌹</h1>
+        <div class="quote"><span id="shayari" class="typing"></span></div>
+        <div class="actions">
+          <button class="btn ghost" id="back2">⬅ Back</button>
+          <button class="btn" id="next2">Next ✨</button>
+        </div>
+        <div class="footerHint">Your smile is my favorite.</div>
+      </section>
+
+      <!-- PAGE 3 -->
+      <section class="page" id="p3">
+        <h1>Will you be my Valentine? ❤️</h1>
+        <p class="big">Radhiii, if your answer is “yes”…<br>you’ll make my whole world. 🌍💞</p>
+        <div class="actions">
+          <button class="btn" id="yesBtn">Yes 😘</button>
+          <button class="btn ghost" id="noBtn">No 🙈</button>
+        </div>
+        <div class="footerHint" id="finalMsg"></div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // ===== heart particles background =====
+    const canvas = document.getElementById("c");
+    const ctx = canvas.getContext("2d");
+    let W,H, hearts=[];
+    const DPR = Math.max(1, window.devicePixelRatio || 1);
+    const rand=(a,b)=>a+Math.random()*(b-a);
+
+    function resize(){
+      W = canvas.width = Math.floor(innerWidth * DPR);
+      H = canvas.height = Math.floor(innerHeight * DPR);
+    }
+    addEventListener("resize", resize); resize();
+
+    function spawn(x){
+      hearts.push({
+        x: x ?? rand(0,W),
+        y: H + rand(40,240),
+        vx: rand(-0.15,0.15)*DPR,
+        vy: rand(-1.2,-2.6)*DPR,
+        s: rand(10,22)*DPR,
+        r: rand(-0.8,0.8),
+        vr: rand(-0.02,0.02),
+        life: 1
+      });
+    }
+
+    function drawHeart(x,y,s,rot,a){
+      ctx.save();
+      ctx.translate(x,y);
+      ctx.rotate(rot);
+      ctx.globalAlpha = a;
+      ctx.scale(s/24, s/24);
+      ctx.beginPath();
+      ctx.moveTo(0, 6);
+      ctx.bezierCurveTo(0, 0, -10, 0, -10, 8);
+      ctx.bezierCurveTo(-10, 14, 0, 18, 0, 22);
+      ctx.bezierCurveTo(0, 18, 10, 14, 10, 8);
+      ctx.bezierCurveTo(10, 0, 0, 0, 0, 6);
+      ctx.closePath();
+      ctx.fillStyle = "rgba(255,77,109,0.95)";
+      ctx.fill();
+      ctx.restore();
+      ctx.globalAlpha = 1;
+    }
+
+    function tick(){
+      ctx.clearRect(0,0,W,H);
+
+      // subtle stars
+      ctx.globalAlpha = 0.08;
+      for(let i=0;i<70;i++){
+        const x = (i*97 % 1000)/1000 * W;
+        const y = (i*53 % 1000)/1000 * H;
+        const r = (i%5+1)*DPR*0.45;
+        ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
+        ctx.fillStyle = "#fff"; ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+      for(let i=hearts.length-1;i>=0;i--){
+        const h=hearts[i];
+        h.x += h.vx; h.y += h.vy; h.r += h.vr; h.life -= 0.0035;
+        drawHeart(h.x,h.y,h.s,h.r, Math.max(0,h.life));
+        if(h.y < -200 || h.life<=0) hearts.splice(i,1);
+      }
+
+      if(hearts.length < 120 && Math.random()<0.55) spawn();
+      requestAnimationFrame(tick);
+    }
+    tick();
+    setTimeout(()=>{ for(let i=0;i<18;i++) spawn(); }, 900);
+
+    // ===== pages =====
+    const pages = ["p1","p2","p3"].map(id=>document.getElementById(id));
+    const dots = [document.getElementById("d1"),document.getElementById("d2"),document.getElementById("d3")];
+
+    function show(i){
+      pages.forEach((p,k)=>p.classList.toggle("active", k===i));
+      dots.forEach((d,k)=>d.classList.toggle("active", k===i));
+      for(let n=0;n<26;n++) spawn((innerWidth/2 + rand(-150,150))*DPR);
+      if(navigator.vibrate) navigator.vibrate(25);
+      if(i===1) startTyping(); // start shayari typing on page 2
+    }
+
+    document.getElementById("next1").onclick=()=>show(1);
+    document.getElementById("back2").onclick=()=>show(0);
+    document.getElementById("next2").onclick=()=>show(2);
+
+    // ===== Shayari typing =====
+    const shayariText =
+`तुम मेरी सुबह की पहली किरण जैसी हो,
+मेरी रातों की चाँदनी जैसी हो।
+तुमसे ही मेरी दुनिया पूरी लगती है,
+तुम मेरी ज़िंदगी की सबसे खूबसूरत कमी पूरी करने वाली हो`;
+
+    let typed=false;
+    function startTyping(){
+      if(typed) return;
+      typed=true;
+      const el = document.getElementById("shayari");
+      let i=0;
+      const speed = 24; // ms per char
+      const timer = setInterval(()=>{
+        el.textContent = shayariText.slice(0, i++);
+        if(i > shayariText.length){
+          clearInterval(timer);
+          el.classList.remove("typing");
+        }
+      }, speed);
+    }
+
+    // ===== yes/no =====
+    const final = document.getElementById("finalMsg");
+    document.getElementById("yesBtn").onclick=()=>{
+      final.textContent = "Yay! 💞 Gaushal is the happiest person right now 😍";
+      for(let n=0;n<95;n++) spawn((innerWidth/2 + rand(-240,240))*DPR);
+    };
+
+    // playful: "No" button runs away
+    const noBtn = document.getElementById("noBtn");
+    noBtn.onmouseenter = () => moveNo();
+    noBtn.onclick = () => moveNo();
+
+    function moveNo(){
+      final.textContent = "Hehe… this button is not allowed 😄";
+      const x = rand(-60, 60);
+      const y = rand(-10, 30);
+      noBtn.style.position = "relative";
+      noBtn.style.left = x + "px";
+      noBtn.style.top  = y + "px";
+      for(let n=0;n<16;n++) spawn((innerWidth/2 + rand(-120,120))*DPR);
+    }
+  </script>
+</body>
+</html>
